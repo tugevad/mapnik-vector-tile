@@ -258,7 +258,42 @@
            '<!@(mapnik-config --cflags)'
         ],
       }
-    }    
+    },
+    {
+      "target_name": "vtiles-create",
+      'dependencies': [ 'mapnik_vector_tile_impl' ],
+      "type": "executable",
+      "defines": [
+        "<@(common_defines)",
+        "MAPNIK_PLUGINDIR=<(MAPNIK_PLUGINDIR)"
+      ],
+      'conditions': [
+        ['enable_sse == "true"', {
+          'defines' : [ 'SSE_MATH' ]
+        }]
+      ],
+      "sources": [
+        "../examples/c++/vtiles-create/vtiles-create.cpp"
+      ],
+      "include_dirs": [
+        "../src"
+      ],
+      'libraries':[
+        '-L<!@(mapnik-config --prefix)/lib',
+        '<!@(mapnik-config --ldflags)',
+        '-lz'
+      ],
+      'cflags_cc' : [
+          '-D_THREAD_SAFE',
+          '<!@(mapnik-config --cflags)'
+      ],
+      'xcode_settings': {
+        'OTHER_CPLUSPLUSFLAGS':[
+           '-D_THREAD_SAFE',
+           '<!@(mapnik-config --cflags)'
+        ],
+      }
+    }
 
   ]
 }
